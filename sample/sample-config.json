@@ -3,7 +3,7 @@
     
     "connection": "sqlite:///<absolutePath>/sample.db",
     "sqlfolder": "sql/",
-    "googleStaticChartsUrl": "https://quick-charts.warriormill.com/chart?bkg=white&c=",
+    "googleStaticChartsUrl": "https://quickcharts.dashflow.io/chart?bkg=white&c=",
     "templates": {
         "css": "templates/style.css"
     },
@@ -130,9 +130,12 @@
         "type": "smtp",
         "host": "<host>",
         "port": "<port>",
-        "username": "<username>",
-        "password": "<password>",
         "enableTLS": true,
-        "requiresAuthentication": true
+        "requiresAuthentication": true,
+        "useEnvVariable":{
+            "username": "SMTP_USER",
+            "password": "SMTP_PWD"
+
+        }
     }
 }
