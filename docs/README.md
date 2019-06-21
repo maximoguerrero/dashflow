@@ -27,4 +27,4 @@ pip install -r ./requirments.txt
 chmod u+x ./df-cli.py
 ```
 
-3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org) on how to configure the files.) Open up sample-config.json, for a on the configuration file visit (https://dashflow.io/config)[https://dashflow.io/config]
+3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org) on how to configure the files.) Open up sample-config.json, for a on the configuration file visit [https://dashflow.io/config](https://dashflow.io/config)
