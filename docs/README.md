@@ -1,10 +1,10 @@
-This projec is built using the [pugSQL](https://pugsql.org/). Which affords us the ability to working with any Python DB-API2, that lets us support a large number of databases  like:  sqlite, postgreSQL, MySQL, and Oracle.
+This projec is built using the [pugSQL](https://pugsql.org/). Which affords us the ability for working with any Python DB-API2, that lets us support a large number of databases  like:  sqlite, postgreSQL, MySQL, and Oracle.
 
 Requirements:
     
 - Python 3
 - pugSQL
-  - sqlAlchmey 
+- sqlAlchmey 
 - Jinja Templating Engine
   
 
@@ -12,12 +12,16 @@ Requirements:
 ## Quickstart
 
 1) Start by clonning the repo.
+
+
     ```
     git clone https://github.com/maximoguerrero/dashflow.git
     cd dashflow
     ```
 
 2) Assuming your using python3 install the required modules.
+   
+
     ```
     pip install -f ./requirments.txt
     ```
