@@ -1,6 +1,6 @@
 theme: jekyll-theme-slate
 show_downloads: true
-title: Dash Flow
+title: dashflow
 description: Easily create database driven email dashboards and configured via simple json file.
 github:
   zip_url: https://github.com/maximoguerrero/dashflow/archive/master.zip
