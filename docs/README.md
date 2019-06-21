@@ -39,3 +39,6 @@ chmod u+x ./df-cli.py
 ```
 ./df-cli.py --configFile=sample/sample-config.json --parameters="kind:adio"
 ```
+
+5) You will receive and similar to this
+![alt="example of rendered email"](https://dashflow.io/example.png)
