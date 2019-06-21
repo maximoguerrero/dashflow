@@ -41,4 +41,4 @@ chmod u+x ./df-cli.py
 ```
 
 5) You will receive and similar to this
-![alt="example of rendered email"](https://dashflow.io/example.png)
+<a _target="blank" href="https://dashflow.io/example.png">![alt="example of rendered email"](https://dashflow.io/example.png)</a>
