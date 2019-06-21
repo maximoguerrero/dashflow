@@ -1,4 +1,5 @@
 [Home](/) | [Config](/config)
+---
 
 # Config File Documentation
 
