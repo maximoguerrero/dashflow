@@ -26,6 +26,4 @@ Requirements:
     pip install -f ./requirments.txt
     ```
 
-3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org) on how to configure the files.)
-
-    Open up sample-config.json 
+3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org) on how to configure the files.) Open up sample-config.json, for a on the configuration file visit https://dashflow.io/config
