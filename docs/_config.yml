@@ -1,5 +1,6 @@
 theme: jekyll-theme-slate
-show_downloads: true
+show_downloads: 
+url: "https://dashflow.io"
 title: dashflow
 description: Easily create database driven email dashboards and configured via simple json file.
 github:
