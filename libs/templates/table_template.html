@@ -1,0 +1,23 @@
+<h3>{{title}}</h3>
+<table class="table-report">
+    {% if data|length  %}
+    <thead>
+        <tr>
+
+            {% for key in dataKeys %}
+            <th>{{key}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for row in data %}
+            <tr>
+                {% for key in row.keys() %}
+                    <td>{{row[key]}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% endif %}
+</table>
