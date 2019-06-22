@@ -39,3 +39,53 @@ This should point to your own hosted version of [quickcharts.io](http://quickcha
 
 ---
 
+### title
+
+The tile to be used at the top of the email. Will use an H1 tag. Leave as empty string if you dont want it displayed.
+
+---
+
+### description
+
+This will be renderd under the title as the first paragraph. Leave as empty string if you dont it displayed.
+
+---
+
+### subject
+
+The subject line to be used in the email
+
+---
+
+### from
+
+The from address for the email
+
+---
+
+### sendEngine
+**type**:  smtp
+
+**host**:  ip address or hostname to the smtp server
+
+**port**:  port to use for connecting to the smtp server
+
+**enableTLS**: where or not to start tls connection
+
+**requiresAuthentication**: where or not a username and password is used to log into the server.
+
+*OPTIONAL*
+
+**username**: username to login
+
+**password**: password to login
+
+**useEnvVariable**: enviroment variables for username and password to use when login into smtp server
+
+```
+    "useEnvVariable": {
+        "username": "SMTP_USER",
+        "password": "SMTP_PWD"
+    }
+```
+
