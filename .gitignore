@@ -110,5 +110,6 @@ venv.bak/
 
 sample-oracle/
 oracle-sample/
+test/
 test-oracle.py
 test-oracle.py

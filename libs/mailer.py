@@ -36,7 +36,7 @@ class Mailer:
 
             if "database" == item["type"]:
                 args = dict()
-                if self.parrameters and "moduleParrameters" in  item:
+                if self.parrameters and "moduleParrameters" in item:
                     for mpKey in item["moduleParrameters"]:
                         for gpKey in self.parrameters.keys():
                             if(mpKey["name"] == gpKey):
@@ -67,13 +67,24 @@ class Mailer:
         # Try to send the message.
         try:  
             print("start sending", msg['From'],  msg['To'])
-            server = smtplib.SMTP(self.configFile['sendEngine']['host'], self.configFile['sendEngine']['port'])
+            server = smtplib.SMTP(self.configFile['sendEngine']['host'], 
+                                  self.configFile['sendEngine']['port'])
             server.ehlo()
             server.starttls()
             server.ehlo()
 
-            if "requiresAuthentication" in self.configFile['sendEngine'] and self.configFile['sendEngine']['requiresAuthentication']:
-                server.login(self.configFile['sendEngine']['username'], self.configFile['sendEngine']['password'])
+            if ("requiresAuthentication" in self.configFile['sendEngine'] and 
+                 self.configFile['sendEngine']['requiresAuthentication']):
+                if "useEnvVariable" in self.configFile["sendEngine"]:
+                    server.login(os.environ[self.configFile["sendEngine"]
+                                                           ["useEnvVariable"]
+                                                           ["username"]],
+                                 os.environ[self.configFile["sendEngine"]
+                                                           ["useEnvVariable"]
+                                                           ["password"]])
+                else:
+                    server.login(self.configFile['sendEngine']['username'],
+                                 self.configFile['sendEngine']['password'])
 
             server.sendmail(msg['From'],  msg['To'], msg.as_string())
             server.close()
