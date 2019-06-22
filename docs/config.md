@@ -35,7 +35,9 @@ This is a the folder containig the sql files from which the sections will be gen
 
 This should point to your own hosted version of [quickcharts.io](http://quickcharts.io). You may use our default just for testing. *(charts may not dispay or timeout during high load)*
 
-```https://quickcharts.dashflow.io/chart?bkg=white&c=```
+```
+https://quickcharts.dashflow.io/chart?bkg=white&c=
+```
 
 ---
 
@@ -60,6 +62,31 @@ The subject line to be used in the email
 ### from
 
 The from address for the email
+
+---
+
+### to
+
+Takes a collection of objects. Can be either a string or a database lookup.
+
+*STRING*
+```
+    "to": [
+        {
+            "type": "string",
+            "value": "someone@somewhere.com"
+        }
+    ]
+```
+*DATABASE*
+```
+    "to": [
+        {
+            "type": "database",
+            "moduleName": "send_list"
+        }
+    ]
+```
 
 ---
 
@@ -89,3 +116,15 @@ The from address for the email
     }
 ```
 
+---
+## Sections
+
+sections is a list of section configuration types. The types can be any of the following **"database"**, **"text/html"**, or **"chart"**.
+
+see [sample configue files](https://github.com/maximoguerrero/dashflow/blob/master/sample/sample-config.json) for exmaples of use.
+
+**text/html** will just render html markup and not database interactions.
+
+**database** sections can be renderd either as a *table* or as *markup*.  When using markup you can inject results form a query into markup by referencing column valus, your query must return one row.  *moduleName* should be used for the sql querie you created.
+
+**chart** section will render a chart along with a description at the bottom of the chart and a title at the top of the chart. see [sample file](https://github.com/maximoguerrero/dashflow/blob/master/sample/sample-config.json) for proper usage.
