@@ -55,12 +55,11 @@ class Mailer:
 
         msg.attach(MIMEText(self.htmlBody, 'html'))
 
+        msg['From'] = self.configFile['from']
         if self.configFile["isDebug"]:
-            msg['From'] = 'info@warriormill.com'
             msg['To'] = 'maximo.guerrero@gmail.com'
             msg['Subject'] = "DEBUG " + self.configFile['subject']
         else:
-            msg['From'] = self.configFile['from']
             msg['To'] = self.loadRecipients()
             msg['Subject'] = self.configFile['subject']
 
