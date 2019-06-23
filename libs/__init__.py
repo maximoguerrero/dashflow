@@ -1,5 +1,4 @@
 import json, os
-from smtplib import SMTP
 from . import compiler as pcomp
 from . import mailer as mailer
 

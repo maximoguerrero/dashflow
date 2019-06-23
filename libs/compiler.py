@@ -50,11 +50,10 @@ class Compiler:
         modPath = os.path.join(configPath, self.configFile["sqlfolder"])
         self.queries = pugsql.module(modPath)
         
-
         conn = self.configFile["connection"]
         if "<absolutePath>" in conn:
             conn = conn.replace("<absolutePath>", configPath)
-        print(conn)
+
         self.queries.connect(conn)
         if "templates" in self.configFile and "css" in self.configFile["templates"]["css"]:
             with open(os.path.join(configPath,  self.configFile["templates"]["css"]), "r") as f:
