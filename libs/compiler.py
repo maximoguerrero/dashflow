@@ -2,15 +2,7 @@ import pugsql, os, json, sys, random
 import urllib
 from jinja2 import Environment, FileSystemLoader, BaseLoader, select_autoescape
 
-
-templateDir = os.path.join(os.path.dirname(
-                            os.path.abspath(__file__)), "templates")
 cwd = os.getcwd()
-
-env = Environment(
-    loader=FileSystemLoader(templateDir),
-    autoescape=select_autoescape(['html', 'xml'])
-)
 
 colorPalette = ['#a62987', '#0d404f', '#dc8fa3', '#9dc352', '#b0106a',
                 '#697832', '#96ac48', '#1d1681', '#aecc71', '#799542',
@@ -39,8 +31,8 @@ class Compiler:
     configPath = ""
     queries = {}
     parrameters = None
-    templateDir = ''
     baseCss = ''
+    env = None
 
     def __init__(self, configFile, configPath, parrameters=None):
         self.configFile = configFile
@@ -55,13 +47,31 @@ class Compiler:
             conn = conn.replace("<absolutePath>", configPath)
 
         self.queries.connect(conn)
-        if "templates" in self.configFile and "css" in self.configFile["templates"]["css"]:
+        if "templates" in self.configFile and "css" in self.configFile["templates"]:
             with open(os.path.join(configPath,  self.configFile["templates"]["css"]), "r") as f:
                 self.baseCss = f.read()
-
         else:
             with open(os.path.join(templateDir, "base_styles.css"), "r") as f:
                 self.baseCss = f.read()
+
+
+        if "templates" in self.configFile and "html" in self.configFile["templates"]:
+            templateDir = os.path.join(configPath,  self.configFile["templates"]["html"])
+            self.env = Environment(
+                loader=FileSystemLoader(templateDir),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
+        else:
+                        
+
+            templateDir = os.path.join(os.path.dirname(
+                                        os.path.abspath(__file__)), "templates")
+            self.env = Environment(
+                loader=FileSystemLoader(templateDir),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
+
+#            print("SETTING ENV ", self.templateDir)
 
     def getConfig(self):
         return self.configFile
@@ -151,16 +161,16 @@ class Compiler:
             if self.configFile["isDebug"]:
                 print("\n===================================================")
 
-        basetemplate = env.get_template('base_template.html')
+        basetemplate =  self.env.get_template('base_template.html')
         body = '\n<hr/>\n'.join(htmlSections)
         return basetemplate.render(body=body, css=self.baseCss)
 
-    def buildHeader(seld, title, description=''):
-        template = env.get_template("header_template.html")
+    def buildHeader(self, title, description=''):
+        template = self.env.get_template("header_template.html")
         return template.render(title=title, description=description)
 
     def buildHtmlTable(self, data, keys, title):
-        template = env.get_template('table_template.html')
+        template = self.env.get_template('table_template.html')
         return template.render(data=data, dataKeys=keys, title=title)
 
     def buildMarkup(self, data, markup, title=''):
@@ -169,7 +179,7 @@ class Compiler:
         return template.render(data=data, title=title)
 
     def buildHtmlChart(self, chartSrc, title, description=''):
-        template = env.get_template('chart_template.html')
+        template = self.env.get_template('chart_template.html')
         return template.render(chartSrc=chartSrc, title=title, description=description)
 
     def buildHorizontalImgSimple(self, data, type='horizontalBar'):
