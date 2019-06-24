@@ -98,9 +98,10 @@ class Compiler:
             htmlSections.append(self.buildHeader(title, description))
 
         for section in sections:
-            print("===================================================\n")
-            print("Section ", section['sectionTitle'])
-            print("Type ", section['type'])
+            if self.configFile["isDebug"]:
+                print("===================================================\n")
+                print("Section ", section['sectionTitle'])
+                print("Type ", section['type'])
 
             keys = []
             data = []
@@ -147,7 +148,8 @@ class Compiler:
 
                 htmlSections.append(self.buildHtmlChart(chartSrc, section['sectionTitle'], description))
 
-            print("\n===================================================")
+            if self.configFile["isDebug"]:
+                print("\n===================================================")
 
         basetemplate = env.get_template('base_template.html')
         body = '\n<hr/>\n'.join(htmlSections)

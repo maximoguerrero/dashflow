@@ -1,5 +1,5 @@
 {
-    "isDebug": true,
+    "isDebug": false,
     
     "connection": "sqlite:///<absolutePath>/sample.db",
     "sqlfolder": "sql/",
@@ -13,6 +13,17 @@
             "moduleName": "most_genre_sold",
             "sectionTitle": "Most Albums Sold to Date",
             "renderAs": "table"
+        },
+        {
+            "type": "chart",
+            "sectionTitle": "stacked bar chart!",
+            "description": "Irure esse eu officia consequat mollit ullamco est aliquip. Minim qui fugiat excepteur quis.",
+            "moduleName": "media_profit_by_type",
+            "groupBy": "year",
+            "chart": {
+                "type": "bar",
+                "stacked": true
+            }
         }
     ],
     "to": [
