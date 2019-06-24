@@ -31,7 +31,7 @@ This is a the folder containig the sql files from which the sections will be gen
 
 ---
 
-### googleStaticChartsUrl
+### quickChartsUrl
 
 This should point to your own hosted version of [quickcharts.io](http://quickcharts.io). You may use our default just for testing. *(charts may not dispay or timeout during high load)*
 

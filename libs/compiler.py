@@ -208,7 +208,7 @@ class Compiler:
 
         toJson = json.dumps(toJson)
         qs = urllib.parse.quote(toJson)
-        return self.configFile["googleStaticChartsUrl"] + qs
+        return self.configFile["quickChartsUrl"] + qs
 
     def buildChartImg(self, data, groupBy, type="bar", stacked=True):
         labels = sorted(set([i['label'] for i in data]))
@@ -264,6 +264,6 @@ class Compiler:
 
         toJson = json.dumps(toJson)
         qs = urllib.parse.quote(toJson)
-        return self.configFile["googleStaticChartsUrl"] + qs
+        return self.configFile["quickChartsUrl"] + qs
 
     
