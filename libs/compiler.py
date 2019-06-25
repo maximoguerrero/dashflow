@@ -29,6 +29,7 @@ colorPalette = ['#a62987', '#0d404f', '#dc8fa3', '#9dc352', '#b0106a',
 class Compiler:
     configFile = {}
     configPath = ""
+    templateDir = ""
     queries = {}
     parrameters = None
     baseCss = ''
@@ -47,29 +48,26 @@ class Compiler:
             conn = conn.replace("<absolutePath>", configPath)
 
         self.queries.connect(conn)
+
+    
+        self.templateDir = os.path.join(os.path.dirname(
+                                    os.path.abspath(__file__)), "templates")
+                                    
         if "templates" in self.configFile and "css" in self.configFile["templates"]:
             with open(os.path.join(configPath,  self.configFile["templates"]["css"]), "r") as f:
                 self.baseCss = f.read()
         else:
-            with open(os.path.join(templateDir, "base_styles.css"), "r") as f:
+            with open(os.path.join(self.templateDir, "base_styles.css"), "r") as f:
                 self.baseCss = f.read()
 
 
         if "templates" in self.configFile and "html" in self.configFile["templates"]:
-            templateDir = os.path.join(configPath,  self.configFile["templates"]["html"])
-            self.env = Environment(
-                loader=FileSystemLoader(templateDir),
-                autoescape=select_autoescape(['html', 'xml'])
-            )
-        else:
-                        
+            self.templateDir = os.path.join(configPath,  self.configFile["templates"]["html"])
 
-            templateDir = os.path.join(os.path.dirname(
-                                        os.path.abspath(__file__)), "templates")
-            self.env = Environment(
-                loader=FileSystemLoader(templateDir),
-                autoescape=select_autoescape(['html', 'xml'])
-            )
+        self.env = Environment(
+            loader=FileSystemLoader(self.templateDir),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
 
 #            print("SETTING ENV ", self.templateDir)
 
