@@ -1,10 +1,12 @@
 import json, os
+from headless_pdfkit import generate_pdf as genpdf
 from . import compiler as pcomp
 from . import mailer as mailer
 
 __version__ = "1.0"
 
 cwd = os.getcwd()
+
 
 def load(configFile, parrameters=None):
     configFile = os.path.realpath(os.path.join(cwd, configFile))
@@ -17,8 +19,21 @@ def load(configFile, parrameters=None):
 
 def send(pc):
     htmlEmail = pc.build()
-    m = mailer.Mailer(pc.getConfig(), pc.getConfigPath(), pc.getParrameters(), htmlEmail)
+    m = mailer.Mailer(pc.getConfig(),
+                      pc.getConfigPath(),
+                      pc.getParrameters(), 
+                      htmlEmail)
     m.send()
     return
+
+
+def pdf(pc, filename):
+    htmlEmail = pc.build()
+    ret = genpdf(htmlEmail)
+    pdffile = os.path.join(pc.getConfigPath(), filename)
+    print(pdffile)
+    with open(pdffile, 'wb') as w:
+        w.write(ret)
+
 
 __all__ = ["load", "send" "__version__"]

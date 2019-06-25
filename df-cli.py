@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from libs import load as pcld, send as pcsend
+from libs import load as pcld, send as pcsend, pdf as pcpdf
 
 
 def main():
@@ -9,6 +9,8 @@ def main():
                                                          'to be passed to sql'
                                                          'statements')
     parser.add_argument('--configFile',  help='config file for mailing')
+    parser.add_argument('--pdfFile',  help='config file for mailing')
+    
     args = parser.parse_args()
     print(args)
 
@@ -24,7 +26,12 @@ def main():
         configFile = args.configFile
 
     pc = pcld(configFile, parrameters)
-    pcsend(pc)
+
+    if "pdfFile" in args:
+        pcpdf(pc, args.pdfFile)
+
+    else:
+        pcsend(pc)
 
     return
 

@@ -4,3 +4,4 @@ MarkupSafe==1.1.1
 pugsql==0.1.11
 SQLAlchemy==1.3.4
 fire==0.1.3
+headless-pdfkit==0.1.5
