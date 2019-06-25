@@ -24,7 +24,7 @@ git clone https://github.com/maximoguerrero/dashflow.git
 cd dashflow
 ```
 
-2) Assuming your using and evironment running python3 install the required modules.
+2) Assuming your using an evironment running python3 install the required modules and make the cli script executable
    
 
 ```
@@ -40,5 +40,5 @@ chmod u+x ./df-cli.py
 ./df-cli.py --configFile=sample/sample-config.json --parameters="kind:adio"
 ```
 
-5) You will receive and similar to this
+5) You will receive an email similar to this
 <a _target="blank" href="https://dashflow.io/example.png">![alt="example of rendered email"](https://dashflow.io/example.png)</a>
