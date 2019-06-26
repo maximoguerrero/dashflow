@@ -1,4 +1,4 @@
-[Home](/) | [Config](/config) | [Cli](/cli)W
+[Home](/) | [Config](/config) | [Cli](/cli)
 ---
 
 This projec is built using the <a target="_blank" href="http://pugsql.org">pugSQL</a>. Which affords us the ability for working with any Python DB-API2, that lets us support a large number of databases  like:  sqlite, postgreSQL, MySQL, and Oracle.
