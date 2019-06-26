@@ -44,3 +44,11 @@ sudo apt install xvfb
 
 5) You will receive an email similar to this
 <a _target="blank" href="https://dashflow.io/example.png">![alt="example of rendered email"](https://dashflow.io/example.png)</a>
+
+---
+
+## Run Unit Tests
+
+```
+python -m unittest  compiler-tests.py
+```
