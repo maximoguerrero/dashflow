@@ -9,7 +9,9 @@ def main():
                                                          'to be passed to sql'
                                                          'statements')
     parser.add_argument('--configFile',  help='config file for mailing')
-    parser.add_argument('--pdfFile',  help='config file for mailing')
+    parser.add_argument('--pdfFile',  help='name to use when generating the pdf file ')
+    parser.add_argument('--pdfOnly', default=False,  help='do not send email only generate pdf')
+    parser.add_argument('--sendAsAttachment', default=False,  help='send the report as pdf ')
     
     args = parser.parse_args()
     print(args)
@@ -27,9 +29,13 @@ def main():
 
     pc = pcld(configFile, parrameters)
 
-    if "pdfFile" in args:
+    if "pdfFile" in args and "pdfOnly" in args and args.pdfOnly:
         pcpdf(pc, args.pdfFile)
-
+    elif 'sendAsAttachment' in args and args.sendAsAttachment:
+        if "pdfFile" in args:
+            pcsend(pc, args.pdfFile, True)
+        else:
+            raise Exception("send as attachment must us pdffile")
     else:
         pcsend(pc)
 

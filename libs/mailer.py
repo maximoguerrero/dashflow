@@ -1,19 +1,23 @@
 import pugsql, os
 import smtplib
 
+from headless_pdfkit import generate_pdf as genpdf
 from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 
 
 class Mailer:
     configFile = ""
+    configPath = ""
     htmlBody = ""
     recipients = []
     parrameters = dict()
 
     def __init__(self, configFile, configPath, parrameters, htmlBody):
         self.configFile = configFile
+        self.configPath = configPath
         self.htmlBody = htmlBody
         self.parrameters = parrameters
 
@@ -48,12 +52,25 @@ class Mailer:
 
         return ', '.join(self.recipients)
 
-    def send(self):
+    def send(self, sendAsPDF=False, pdfFile='report.pdf'):
         print("starting to send")
         print(self.configFile['sendEngine'])
         msg = MIMEMultipart()
 
-        msg.attach(MIMEText(self.htmlBody, 'html'))
+        if(not sendAsPDF):
+            msg.attach(MIMEText(self.htmlBody, 'html'))
+        else:
+            ret = genpdf(self.htmlBody)
+            pdffile = os.path.join(self.configPath, pdfFile)
+            with open(pdffile, 'wb') as w:
+                w.write(ret)
+
+            with open(pdffile, "rb") as pdfData:
+                pdfMime = MIMEApplication(pdfData.read())
+                pdfMime['Content-Disposition'] = 'attachment; filename="%s"' % pdfFile
+                msg.attach(pdfMime)
+
+
 
         msg['From'] = self.configFile['from']
         if self.configFile["isDebug"]:

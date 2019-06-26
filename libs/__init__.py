@@ -17,13 +17,13 @@ def load(configFile, parrameters=None):
     return compiler
 
 
-def send(pc):
+def send(pc, filename=None, sendAsAttachment=False):
     htmlEmail = pc.build()
     m = mailer.Mailer(pc.getConfig(),
                       pc.getConfigPath(),
-                      pc.getParrameters(), 
+                      pc.getParrameters(),
                       htmlEmail)
-    m.send()
+    m.send(sendAsAttachment, filename)
     return
 
 
