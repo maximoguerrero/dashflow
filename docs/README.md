@@ -50,5 +50,6 @@ sudo apt install xvfb
 ## Run Unit Tests
 
 ```
+cd unittests
 python -m unittest  compiler-tests.py
 ```
