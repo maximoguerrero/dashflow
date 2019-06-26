@@ -113,3 +113,6 @@ oracle-sample/
 test/
 test-oracle.py
 test-oracle.py
+
+docs/_site
+docs/Gemfile.lock

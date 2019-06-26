@@ -1,4 +1,4 @@
-[Home](/) | [Config](/config)
+[Home](/) | [Config](/config) | [Cli](/cli)
 ---
 
 # Config File Documentation
