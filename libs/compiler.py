@@ -69,7 +69,6 @@ class Compiler:
             autoescape=select_autoescape(['html', 'xml'])
         )
 
-#            print("SETTING ENV ", self.templateDir)
 
     def getConfig(self):
         return self.configFile
@@ -138,13 +137,17 @@ class Compiler:
 
             if "chart" in section["type"]:
                 description = section["description"]
+                overrideAllOptions = None
+                if "options" in section["chart"]:
+                    overrideAllOptions = section["chart"]["options"]
+
                 if section["chart"]["type"] in ("horizontalBarSimple",
                                                 "doughnut",
                                                 "pie"):
                     t = section["chart"]["type"]
                     if t == "horizontalBarSimple":
                         t = "horizontalBar"
-                    chartSrc = self.buildHorizontalImgSimple(data, type=t)
+                    chartSrc = self.buildHorizontalImgSimple(data, type=t, options=overrideAllOptions)
 
                 if not section["chart"]["type"] in ("horizontalBarSimple",
                                                     "doughnut",
@@ -152,7 +155,9 @@ class Compiler:
                     stacked = False
                     if "stacked" in section["chart"]:
                         stacked = section["chart"]["stacked"]
-                    chartSrc = self.buildChartImg(data,  section["groupBy"], section["chart"]["type"], stacked)
+                    chartSrc = self.buildChartImg(data,  section["groupBy"], section["chart"]["type"], stacked, overrideAllOptions)
+
+                    
 
                 htmlSections.append(self.buildHtmlChart(chartSrc, section['sectionTitle'], description))
 
@@ -208,7 +213,7 @@ class Compiler:
         qs = urllib.parse.quote(toJson)
         return self.configFile["quickChartsUrl"] + qs
 
-    def buildChartImg(self, data, groupBy, type="bar", stacked=True):
+    def buildChartImg(self, data, groupBy, type="bar", stacked=True, options=None):
         labels = sorted(set([i['label'] for i in data]))
         values = [i['value'] for i in data]
         groupByData = sorted(set([i[groupBy] for i in data]))
@@ -259,6 +264,9 @@ class Compiler:
                         "stacked": stacked,
                     }],
                 }
+        if(options):
+            toJson["options"] = options
+
 
         toJson = json.dumps(toJson)
         qs = urllib.parse.quote(toJson)
