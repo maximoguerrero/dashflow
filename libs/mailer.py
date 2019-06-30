@@ -30,7 +30,6 @@ class Mailer:
             conn.replace("<absolutePath>", configPath)
 
         self.queries.connect(conn)
-
         return
 
     def loadRecipients(self):
