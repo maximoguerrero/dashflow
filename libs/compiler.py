@@ -104,7 +104,6 @@ class Compiler:
         sections = self.configFile["sections"]
 
         titleKey = "sectionTitle"
-
         title = ""
         description = ""
 
