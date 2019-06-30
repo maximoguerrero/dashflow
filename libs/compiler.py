@@ -81,8 +81,8 @@ class Compiler:
 
     def getData(self, section):
         args = dict()
-        if self.parameters and "moduleparameters" in section:
-            for mpKey in section["moduleparameters"]:
+        if self.parameters and "moduleParameters" in section:
+            for mpKey in section["moduleParameters"]:
                 for gpKey in self.parameters.keys():
                     if(mpKey["name"] == gpKey):
                         args[gpKey] = self.parameters[gpKey]

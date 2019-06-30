@@ -40,8 +40,8 @@ class Mailer:
 
             if "database" == item["type"]:
                 args = dict()
-                if self.parameters and "moduleparameters" in item:
-                    for mpKey in item["moduleparameters"]:
+                if self.parameters and "moduleParameters" in item:
+                    for mpKey in item["moduleParameters"]:
                         for gpKey in self.parameters.keys():
                             if(mpKey["name"] == gpKey):
                                 args[gpKey] = self.parameters[gpKey]

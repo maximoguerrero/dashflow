@@ -65,7 +65,7 @@
             "sectionTitle": "horizontal bar chart! with query parramter",
             "description": "Irure esse eu officia consequat mollit ullamco est aliquip. Minim qui fugiat excepteur quis.",
             "moduleName": "media_profit_by_type_filtered",
-            "moduleparameters": [
+            "moduleParameters": [
                 {
                     "name": "kind"
                 }
