@@ -19,8 +19,8 @@ pugsql.get_modules().clear()
 '''
 
 # test my loader
-parrameters = dict({"kind": "audio"})
-pc = pcld('sample/sample-config.json', parrameters)
+parameters = dict({"kind": "audio"})
+pc = pcld('sample/sample-config.json', parameters)
 html = pc.build()
 
 f = open("test.html", "w")

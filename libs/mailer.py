@@ -13,13 +13,13 @@ class Mailer:
     configPath = ""
     htmlBody = ""
     recipients = []
-    parrameters = dict()
+    parameters = dict()
 
-    def __init__(self, configFile, configPath, parrameters, htmlBody):
+    def __init__(self, configFile, configPath, parameters, htmlBody):
         self.configFile = configFile
         self.configPath = configPath
         self.htmlBody = htmlBody
-        self.parrameters = parrameters
+        self.parameters = parameters
 
         modPath = os.path.join(configPath, self.configFile["sqlfolder"])
         self.queries = pugsql.module(modPath)
@@ -40,11 +40,11 @@ class Mailer:
 
             if "database" == item["type"]:
                 args = dict()
-                if self.parrameters and "moduleParrameters" in item:
-                    for mpKey in item["moduleParrameters"]:
-                        for gpKey in self.parrameters.keys():
+                if self.parameters and "moduleparameters" in item:
+                    for mpKey in item["moduleparameters"]:
+                        for gpKey in self.parameters.keys():
                             if(mpKey["name"] == gpKey):
-                                args[gpKey] = self.parrameters[gpKey]
+                                args[gpKey] = self.parameters[gpKey]
                 data = [i for i in getattr(self.queries, item["moduleName"])(**args)]
 
                 for item in data:

@@ -1,16 +1,16 @@
 [Home](/) | [Config](/config) | [Cli](/cli)
 ---
 
-# CLI parrameters
+# CLI parameters
 
 ---
 
-**--parrameter**
+**--parameter**
 
 Use this flag to  pass parramets to your sql modules. Format must be delimited by a colon "key:value". 
 For multiple parrmeters just repeat qouted key-value pairs;
 ```
-./df-cli.py --configFile ./sample/sample-config.json --parrameter "kind:audio" "test:test"
+./df-cli.py --configFile ./sample/sample-config.json --parameter "kind:audio" "test:test"
 ```
 
 ---

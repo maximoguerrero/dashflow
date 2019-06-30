@@ -31,14 +31,14 @@ class Compiler:
     configPath = ""
     templateDir = ""
     queries = {}
-    parrameters = None
+    parameters = None
     baseCss = ''
     env = None
 
-    def __init__(self, configFile, configPath, parrameters=None):
+    def __init__(self, configFile, configPath, parameters=None):
         self.configFile = configFile
         self.configPath = configPath
-        self.parrameters = parrameters
+        self.parameters = parameters
 
         modPath = os.path.join(configPath, self.configFile["sqlfolder"])
         self.queries = pugsql.module(modPath)
@@ -76,16 +76,16 @@ class Compiler:
     def getConfigPath(self):
         return self.configPath
     
-    def getParrameters(self):
-        return self.parrameters
+    def getparameters(self):
+        return self.parameters
 
     def getData(self, section):
         args = dict()
-        if self.parrameters and "moduleParrameters" in section:
-            for mpKey in section["moduleParrameters"]:
-                for gpKey in self.parrameters.keys():
+        if self.parameters and "moduleparameters" in section:
+            for mpKey in section["moduleparameters"]:
+                for gpKey in self.parameters.keys():
                     if(mpKey["name"] == gpKey):
-                        args[gpKey] = self.parrameters[gpKey]
+                        args[gpKey] = self.parameters[gpKey]
 
         data = [i for i in getattr(self.queries, section["moduleName"])(**args)]
         return data
@@ -147,7 +147,7 @@ class Compiler:
                     t = section["chart"]["type"]
                     if t == "horizontalBarSimple":
                         t = "horizontalBar"
-                    chartSrc = self.buildHorizontalImgSimple(data, type=t, options=overrideAllOptions)
+                    chartSrc = self.buildHorizontalImgSimple(data, t, overrideAllOptions)
 
                 if not section["chart"]["type"] in ("horizontalBarSimple",
                                                     "doughnut",
@@ -185,7 +185,7 @@ class Compiler:
         template = self.env.get_template('chart_template.html')
         return template.render(chartSrc=chartSrc, title=title, description=description)
 
-    def buildHorizontalImgSimple(self, data, type='horizontalBar'):
+    def buildHorizontalImgSimple(self, data, type='horizontalBar', options=None):
         labels = [i['label'] for i in data]
         values = [i['value'] for i in data]
         datasets = [{"data": values}]
@@ -208,6 +208,9 @@ class Compiler:
                             }
                         }
                     }
+
+        if(options):
+            toJson["options"] = options
 
         toJson = json.dumps(toJson)
         qs = urllib.parse.quote(toJson)

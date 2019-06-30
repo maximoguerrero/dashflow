@@ -5,7 +5,7 @@ from libs import load as pcld, send as pcsend, pdf as pcpdf
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--parrameter', nargs="+",  help='parrameters that are'
+    parser.add_argument('--parameter', nargs="+",  help='parameters that are'
                                                          'to be passed to sql'
                                                          'statements')
     parser.add_argument('--configFile',  help='config file for mailing')
@@ -16,18 +16,18 @@ def main():
     args = parser.parse_args()
     print(args)
 
-    parrameters = dict()
-    if "parrameter" in args:
-        for arg in args.parrameter:
+    parameters = dict()
+    if "parameter" in args:
+        for arg in args.parameter:
             print(arg)
             parram = str(arg).split(':')
-            parrameters[parram[0]] = parram[1]
+            parameters[parram[0]] = parram[1]
 
     configFile = ''
     if "configFile" in args:
         configFile = args.configFile
 
-    pc = pcld(configFile, parrameters)
+    pc = pcld(configFile, parameters)
 
     if "pdfFile" in args and "pdfOnly" in args and args.pdfOnly:
         pcpdf(pc, args.pdfFile)
