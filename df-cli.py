@@ -6,13 +6,17 @@ from libs import load as pcld, send as pcsend, pdf as pcpdf
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--parameter', nargs="+",  help='parameters that are'
-                                                         'to be passed to sql'
-                                                         'statements')
+                                                        'to be passed to sql'
+                                                        'statements')
+
     parser.add_argument('--configFile',  help='config file for mailing')
-    parser.add_argument('--pdfFile',  help='name to use when generating the pdf file ')
-    parser.add_argument('--pdfOnly', default=False,  help='do not send email only generate pdf')
-    parser.add_argument('--sendAsAttachment', default=False,  help='send the report as pdf ')
-    
+    parser.add_argument('--pdfFile',  help='name to use when generating'
+                                           'the pdf file ')
+    parser.add_argument('--pdfOnly', default=False,  help='do not send email'
+                                                          'only generate pdf')
+    parser.add_argument('--sendAsAttachment', default=False,
+                        help='send the report as pdf ')
+
     args = parser.parse_args()
     print(args)
 

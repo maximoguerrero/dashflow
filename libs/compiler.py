@@ -1,4 +1,8 @@
-import pugsql, os, json, sys, random
+import pugsql
+import os
+import json
+import sys
+import random
 import urllib
 from jinja2 import Environment, FileSystemLoader, BaseLoader, select_autoescape
 
@@ -42,40 +46,44 @@ class Compiler:
 
         modPath = os.path.join(configPath, self.configFile["sqlfolder"])
         self.queries = pugsql.module(modPath)
-        
+
         conn = self.configFile["connection"]
         if "<absolutePath>" in conn:
             conn = conn.replace("<absolutePath>", configPath)
 
         self.queries.connect(conn)
 
-    
         self.templateDir = os.path.join(os.path.dirname(
                                     os.path.abspath(__file__)), "templates")
-                                    
-        if "templates" in self.configFile and "css" in self.configFile["templates"]:
-            with open(os.path.join(configPath,  self.configFile["templates"]["css"]), "r") as f:
+
+        if "templates" in self.configFile and \
+           "css" in self.configFile["templates"]:
+            with open(os.path.join(configPath,
+                                   self.configFile["templates"]
+                                                  ["css"]), "r") as f:
                 self.baseCss = f.read()
         else:
-            with open(os.path.join(self.templateDir, "base_styles.css"), "r") as f:
+            with open(os.path.join(self.templateDir,
+                                   "base_styles.css"), "r") as f:
                 self.baseCss = f.read()
 
-
-        if "templates" in self.configFile and "html" in self.configFile["templates"]:
-            self.templateDir = os.path.join(configPath,  self.configFile["templates"]["html"])
+        if "templates" in self.configFile and \
+           "html" in self.configFile["templates"]:
+            self.templateDir = os.path.join(configPath,
+                                            self.configFile["templates"]
+                                                           ["html"])
 
         self.env = Environment(
             loader=FileSystemLoader(self.templateDir),
             autoescape=select_autoescape(['html', 'xml'])
         )
 
-
     def getConfig(self):
         return self.configFile
-    
+
     def getConfigPath(self):
         return self.configPath
-    
+
     def getparameters(self):
         return self.parameters
 
@@ -87,18 +95,24 @@ class Compiler:
                     if(mpKey["name"] == gpKey):
                         args[gpKey] = self.parameters[gpKey]
 
-        data = [i for i in getattr(self.queries, section["moduleName"])(**args)]
+        data = [i for i in getattr(self.queries,
+                                   section["moduleName"])(**args)]
         return data
 
     def build(self):
         htmlSections = []
         sections = self.configFile["sections"]
 
+        titleKey = "sectionTitle"
+
         title = ""
         description = ""
+
         if "title" in self.configFile and len(self.configFile["title"]) > 0:
             title = self.configFile["title"]
-        if "description" in self.configFile and len(self.configFile["description"]) > 0:
+
+        if "description" in self.configFile and \
+           len(self.configFile["description"]) > 0:
             description = self.configFile["description"]
 
         if title or description:
@@ -115,31 +129,37 @@ class Compiler:
 
             if("moduleName" in section):
                 data = self.getData(section)
-            
+
             if(len(data)):
                 keys = data[0].keys()
 
             if "renderAs" in section:
                 if "table" in section["renderAs"]:
-                    htmlSections.append(self.buildHtmlTable(data, keys, section['sectionTitle'],))
+                    htmlSections.append(self.buildHtmlTable(data,
+                                                            keys,
+                                                            section[titleKey]))
 
                 if "markup" in section["renderAs"]:
                     if len(data):
                         data = data[0]
-                        data['title'] = section['sectionTitle']
-                        htmlSections.append(self.buildMarkup(data, section["markup"], section['sectionTitle']))
+                        data['title'] = section[titleKey]
+                        htmlSections.append(self.buildMarkup(data,
+                                                             section["markup"],
+                                                             data['title']))
 
             if "text/html" in section["type"]:
                 markup = ""
                 if("sectionTitle" in section and section["sectionTitle"]):
-                    markup = "<h3>" + section["sectionTitle"] + "</h3>" + section["markup"]
+                    markup = "<h3>{0}</h3>{1}".format(section["sectionTitle"],
+                                                      section["markup"])
+
                 htmlSections.append(markup)
 
             if "chart" in section["type"]:
                 description = section["description"]
-                overrideAllOptions = None
+                overrideOptions = None
                 if "options" in section["chart"]:
-                    overrideAllOptions = section["chart"]["options"]
+                    overrideOptions = section["chart"]["options"]
 
                 if section["chart"]["type"] in ("horizontalBarSimple",
                                                 "doughnut",
@@ -147,7 +167,9 @@ class Compiler:
                     t = section["chart"]["type"]
                     if t == "horizontalBarSimple":
                         t = "horizontalBar"
-                    chartSrc = self.buildHorizontalImgSimple(data, t, overrideAllOptions)
+                    chartSrc = self.buildHorizontalImgSimple(data,
+                                                             t,
+                                                             overrideOptions)
 
                 if not section["chart"]["type"] in ("horizontalBarSimple",
                                                     "doughnut",
@@ -155,16 +177,21 @@ class Compiler:
                     stacked = False
                     if "stacked" in section["chart"]:
                         stacked = section["chart"]["stacked"]
-                    chartSrc = self.buildChartImg(data,  section["groupBy"], section["chart"]["type"], stacked, overrideAllOptions)
 
-                    
+                    chartSrc = self.buildChartImg(data,
+                                                  section["groupBy"],
+                                                  section["chart"]["type"],
+                                                  stacked,
+                                                  overrideOptions)
 
-                htmlSections.append(self.buildHtmlChart(chartSrc, section['sectionTitle'], description))
+                htmlSections.append(self.buildHtmlChart(chartSrc,
+                                                        section[data['title']],
+                                                        description))
 
             if self.configFile["isDebug"]:
                 print("\n===================================================")
 
-        basetemplate =  self.env.get_template('base_template.html')
+        basetemplate = self.env.get_template('base_template.html')
         body = '\n<hr/>\n'.join(htmlSections)
         return basetemplate.render(body=body, css=self.baseCss)
 
@@ -183,9 +210,13 @@ class Compiler:
 
     def buildHtmlChart(self, chartSrc, title, description=''):
         template = self.env.get_template('chart_template.html')
-        return template.render(chartSrc=chartSrc, title=title, description=description)
+        return template.render(chartSrc=chartSrc,
+                               title=title,
+                               description=description)
 
-    def buildHorizontalImgSimple(self, data, type='horizontalBar', options=None):
+    def buildHorizontalImgSimple(self, data, type='horizontalBar',
+                                 options=None):
+
         labels = [i['label'] for i in data]
         values = [i['value'] for i in data]
         datasets = [{"data": values}]
@@ -216,7 +247,9 @@ class Compiler:
         qs = urllib.parse.quote(toJson)
         return self.configFile["quickChartsUrl"] + qs
 
-    def buildChartImg(self, data, groupBy, type="bar", stacked=True, options=None):
+    def buildChartImg(self, data, groupBy, type="bar", stacked=True,
+                      options=None):
+
         labels = sorted(set([i['label'] for i in data]))
         values = [i['value'] for i in data]
         groupByData = sorted(set([i[groupBy] for i in data]))
@@ -233,16 +266,16 @@ class Compiler:
                 for d in data:
                     if d[groupBy] == group and d["label"] == l:
                         v = d["value"]
-                    
+
                 dtmp[l].append(v)
 
-        idx =0
+        idx = 0
         for d in sorted(dtmp.keys()):
             tdata = {
                     "label": d,
                     "data": dtmp[d]
                 }
-            if type == "horizontalBar": 
+            if type == "horizontalBar":
                 tdata["backgroundColor"] = colorPalette[idx]
 
             idx += 1
@@ -270,9 +303,6 @@ class Compiler:
         if(options):
             toJson["options"] = options
 
-
         toJson = json.dumps(toJson)
         qs = urllib.parse.quote(toJson)
         return self.configFile["quickChartsUrl"] + qs
-
-    

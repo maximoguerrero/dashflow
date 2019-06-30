@@ -1,4 +1,5 @@
-import pugsql, os
+import pugsql
+import os
 import smtplib
 
 from headless_pdfkit import generate_pdf as genpdf
@@ -27,11 +28,11 @@ class Mailer:
         conn = self.configFile["connection"]
         if "<absolutePath>" in conn:
             conn.replace("<absolutePath>", configPath)
-            
+
         self.queries.connect(conn)
 
         return
-    
+
     def loadRecipients(self):
         self.recipients = []
         for item in self.configFile["to"]:
@@ -45,10 +46,16 @@ class Mailer:
                         for gpKey in self.parameters.keys():
                             if(mpKey["name"] == gpKey):
                                 args[gpKey] = self.parameters[gpKey]
-                data = [i for i in getattr(self.queries, item["moduleName"])(**args)]
+                data = [i for i in getattr(self.queries,
+                                           item["moduleName"])(**args)]
 
                 for item in data:
                     self.recipients.append(item["email"])
+
+            if "txt" == item["type"]:
+                with open(os.path.join(configPath, item["value"]), "r") as f:
+                    for line in f:
+                        self.recipients.append(line)
 
         return ', '.join(self.recipients)
 
@@ -67,10 +74,9 @@ class Mailer:
 
             with open(pdffile, "rb") as pdfData:
                 pdfMime = MIMEApplication(pdfData.read())
-                pdfMime['Content-Disposition'] = 'attachment; filename="%s"' % pdfFile
+                pdfMime['Content-Disposition'] = 'attachment; filename="%s"'\
+                                                 .format(pdfFile)
                 msg.attach(pdfMime)
-
-
 
         msg['From'] = self.configFile['from']
         if self.configFile["isDebug"]:
@@ -81,16 +87,16 @@ class Mailer:
             msg['Subject'] = self.configFile['subject']
 
         # Try to send the message.
-        try:  
+        try:
             print("start sending", msg['From'],  msg['To'])
-            server = smtplib.SMTP(self.configFile['sendEngine']['host'], 
+            server = smtplib.SMTP(self.configFile['sendEngine']['host'],
                                   self.configFile['sendEngine']['port'])
             server.ehlo()
             server.starttls()
             server.ehlo()
 
-            if ("requiresAuthentication" in self.configFile['sendEngine'] and 
-                 self.configFile['sendEngine']['requiresAuthentication']):
+            if("requiresAuthentication" in self.configFile['sendEngine'] and
+               self.configFile['sendEngine']['requiresAuthentication']):
                 if "useEnvVariable" in self.configFile["sendEngine"]:
                     server.login(os.environ[self.configFile["sendEngine"]
                                                            ["useEnvVariable"]

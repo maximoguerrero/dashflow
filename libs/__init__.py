@@ -1,4 +1,5 @@
-import json, os
+import json
+import os
 from headless_pdfkit import generate_pdf as genpdf
 from . import compiler as pcomp
 from . import mailer as mailer
