@@ -116,3 +116,4 @@ test-oracle.py
 
 docs/_site
 docs/Gemfile.lock
+.DS_Store
