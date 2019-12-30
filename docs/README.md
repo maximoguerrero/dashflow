@@ -36,7 +36,7 @@ chmod u+x ./df-cli.py
 sudo apt install xvfb
 ```
 
-3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org){:target="_blank"} on how to configure the files.) Open up sample-config.json, for a on the configuration file visit [https://dashflow.io/config](https://dashflow.io/config). Edit the config file to point to your database, smtp server, and quick chart hosting.
+3) Review the sample folders. You will find a sql folder in which you see the sql files that drive the dashboard. (see [pugSQL](https://pugsql.org){:target="_blank"} on how to configure the files.) Open up sample-config.json, for more on the configuration file visit [https://dashflow.io/config](https://dashflow.io/config). Edit the config file to point to your database, smtp server, and quick chart hosting.
 
 4) Run the sample from the command line
 
